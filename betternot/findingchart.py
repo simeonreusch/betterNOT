@@ -5,10 +5,11 @@
 import getpass
 import logging
 import shutil
+from pathlib import Path
 
 import keyring
 import requests
-from betternot import fritz
+from betternot import fritz, io
 
 logger = logging.getLogger()
 
@@ -19,5 +20,7 @@ def get_finding_chart(ztf_id: str):
 
     print(f"HTTP code: {response.status_code}, {response.reason}")
     if response.status_code in (200, 400):
-        with open(f"{ztf_id}.png", "wb") as f:
+        outpath = io.get_object_dir(ztf_id)
+
+        with open(outpath / f"{ztf_id}_finder.png", "wb") as f:
             shutil.copyfileobj(response.raw, f)
