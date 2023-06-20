@@ -38,5 +38,6 @@ def run():
 
     obs = Observability(ztf_id=cli_args.name)
     obs.plot_standards()
+    # obs.plot_standards()
     # if cli_args.finding:
     # get_finding_chart(ztf_id=cli_args.name)

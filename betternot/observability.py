@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Author: Simeon Reusch (simeon.reusch@desy.de), most of the code is from Steve Schulze (steve.schulze@fysik.su.se)
+# Author: Most of the code is refactored code by Steve Schulze (steve.schulze@fysik.su.se)
 # License: BSD-3-Clause
 
 import datetime
@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt  # type: ignore
 import numpy as np
 from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from astropy import units as u  # type: ignore
-from astropy.coordinates import AltAz, EarthLocation, SkyCoord  # type: ignore
+from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_body  # type: ignore
 from astropy.time import Time  # type: ignore
 
 from betternot.io import load_config
@@ -19,72 +19,38 @@ from betternot.io import load_config
 class Observability:
     def __init__(self, ztf_id, date: str | None = None):
         self.ztf_id = ztf_id
+
         if date is None:
             self.date = datetime.date.today().strftime("%Y-%m-%d")
         else:
             self.date = date
-        self.site = ap.Observer.at_site(
-            "Roque de los Muchachos", timezone="Europe/Berlin"
-        )
+
+        self.site = EarthLocation.of_site("lapalma")
         self.config = load_config()
-        self.now = Time(datetime.datetime.utcnow())
-        now_mjd = Time(self.now, format="iso").mjd
-
-        # if self.date is not None:
-        #     _date = self.date + " 12:00:00.000000"
-        #     self.time_center = self._date
-        # else:
-        #     self.time_center = Time(now_mjd + 0.45, format="mjd").iso
-
-        # # define an observability window
-        # if self.date is not None:
-        #     self.start_obswindow = Time(self.date + " 00:00:00.000000")
-        # else:
-        #     self.start_obswindow = Time(self.now, format="iso")
-
-        # self.end_obswindow = Time(self.start_obswindow.mjd + 1, format="mjd").iso
-        # self.times = Time(self.start_obswindow + np.linspace(0, 24, 1000) * u.hour)
-
-        # self.get_twilight()
-        # self.get_moon()
-
-    # def get_twilight(self):
-    #     self.twilight_evening = self.site.twilight_evening_astronomical(
-    #         Time(self.start_obswindow), which="next"
-    #     )
-    #     self.twilight_morning = self.site.twilight_morning_astronomical(
-    #         Time(self.start_obswindow), which="next"
-    #     )
-
-    # def get_moon(self):
-    #     moon_times = Time(self.start_obswindow + np.linspace(0, 24, 200) * u.hour)
-    #     self.moon = []
-
-    #     for time in moon_times:
-    #         moon_coord = astropy.coordinates.get_body(
-    #             "moon", time=time, location=self.site.location
-    #         )
-    #         self.moon.append(moon_coord)
 
     def plot_standards(self):
         std_dict = self.config["standards"]
-        std_list = list(std_dict)
+        self.plot_targets(target_dict=std_dict)
 
-        plt.figure(figsize=(9 * np.sqrt(2), 9))
+    def plot_targets(self, target_dict: dict):
+        target_list = list(target_dict)
+        label_size = 14
+
+        plt.figure(figsize=(width := 9, width / 1.61))
         ax = plt.subplot(111)
-
-        obs_NOT = EarthLocation.of_site("lapalma")
 
         midnight_utc = Time(self.date, format="isot", scale="utc") + 1
         delta_midnight = np.linspace(-12, 12, 1000) * u.hour
 
-        frame_time = AltAz(obstime=midnight_utc + delta_midnight, location=obs_NOT)
+        frame_time = AltAz(obstime=midnight_utc + delta_midnight, location=self.site)
 
-        for star in std_list:
+        for target in target_list:
             coords = SkyCoord(
-                std_dict[star]["ra"], std_dict[star]["dec"], unit=(u.hour, u.deg)
+                target_dict[target]["ra"],
+                target_dict[target]["dec"],
+                unit=(u.hour, u.deg),
             )
-            target = ap.FixedTarget(name=star, coord=coords)
+            # target = ap.FixedTarget(name=target, coord=coords)
 
             # ax = self.plot_target(target)
             obj_altazs = coords.transform_to(frame_time)
@@ -96,45 +62,61 @@ class Observability:
             ax.plot(
                 delta_midnight,
                 obj_altazs.alt,
-                label=star,
+                label=target,
                 # label=f"{star} (moon distance: {sep:.0f}°)".format(
                 # obj=star
                 # ),  # , sep=moon_distance["sep"]
                 # ),
-                lw=4,
+                lw=2,
                 # color=colors_vigit[2 * ii],
             )
 
-        # ax.axvspan(
-        #     self.twilight_evening.plot_date,
-        #     self.twilight_morning.plot_date,
-        #     alpha=0.2,
-        #     color="gray",
-        # )
-
-        # midnight = min(self.twilight_evening, self.twilight_morning) + 0.5 * (
-        #     max(self.twilight_evening, self.twilight_morning)
-        #     - min(self.twilight_evening, self.twilight_morning)
-        # )
-
-        # ax.annotate(
-        #     "Night",
-        #     xy=[midnight.plot_date, 85],
-        #     color="dimgray",
-        #     ha="center",
-        #     fontsize=12,
-        # )
-
-        plt.legend()
-        plt.savefig("test.pdf", bbox_inches="tight")
-
-    def plot_target(self, target):
-        ax = plot_altitude(
-            target,
-            self.site,
-            self.time_center,
-            min_altitude=10,
-            style_kwargs={"fmt": "-"},
+        sunaltazs = get_body("sun", midnight_utc + delta_midnight).transform_to(
+            frame_time
         )
 
-        return ax
+        ax.fill_between(
+            x=delta_midnight.value,
+            y1=(0 * u.deg).value,
+            y2=(90 * u.deg).value,
+            where=sunaltazs.alt.value < (-0 * u.deg).value,
+            color="navy",
+            zorder=0,
+            alpha=0.2,
+        )
+
+        ax.fill_between(
+            x=delta_midnight.value,
+            y1=(0 * u.deg).value,
+            y2=(90 * u.deg).value,
+            where=sunaltazs.alt.value < (-18 * u.deg).value,
+            color="navy",
+            zorder=0,
+            alpha=0.2,
+        )
+        ax.axvline(x=0, color="white", lw=1)
+
+        xmin, xmax = -6, 8
+
+        ax.set_xlim((xmin * u.hour).value, (xmax * u.hour).value)
+        labels = [
+            "{:.0f} h".format(x + 24) if x < 0 else "{:.0f} h".format(x)
+            for x in (np.arange(xmax - xmin) + xmin)
+        ]
+        ax.set_xticks(
+            ((np.arange(xmax - xmin) + xmin) * u.hour).value, labels=labels, rotation=45
+        )
+
+        ax.set_ylim((10 * u.deg).value, (90 * u.deg).value)
+
+        ax.set_xlabel("Universal time", fontsize=label_size)
+        ax.set_ylabel("Altitude", fontsize=label_size)
+
+        ax.set_title(
+            self.date + " → " + (Time(self.date) + 1).isot.split("T")[0],
+            fontsize=label_size,
+        )
+
+        plt.grid(True, color="gray", linestyle="dotted", which="both", alpha=0.5)
+        plt.legend()
+        plt.savefig("test.pdf", bbox_inches="tight")
