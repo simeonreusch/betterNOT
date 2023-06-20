@@ -3,6 +3,7 @@
 # License: BSD-3-Clause
 
 import datetime
+import logging
 
 import astroplan as ap  # type: ignore
 import astropy  # type: ignore
@@ -17,8 +18,11 @@ from betternot.io import get_date_dir, load_config
 
 
 class Observability:
-    def __init__(self, ztf_id, date: str | None = None):
-        self.ztf_id = ztf_id
+    def __init__(self, ztf_ids, date: str | None = None):
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.INFO)
+
+        self.ztf_ids = ztf_ids
 
         if date is None:
             self.date = datetime.date.today().strftime("%Y-%m-%d")
@@ -30,9 +34,25 @@ class Observability:
 
     def plot_standards(self):
         std_dict = self.config["standards"]
-        self.plot_targets(target_dict=std_dict)
+        self.create_plot(target_dict=std_dict, savename="standards")
 
-    def plot_targets(self, target_dict: dict):
+    def plot_targets(self):
+        from betternot.fritz import radec
+
+        target_dict = {}
+
+        for ztf_id in self.ztf_ids:
+            ra, dec = radec(ztf_id)
+            if ra is None:
+                self.logger.info(f"Source {ztf_id} not found on Fritz, skipping.")
+            else:
+                target_dict.update({ztf_id: {"ra": ra, "dec": dec}})
+
+        print(target_dict)
+
+        self.create_plot(target_dict=target_dict, savename="targets")
+
+    def create_plot(self, target_dict: dict, savename: str):
         target_list = list(target_dict)
         label_size = 14
 
@@ -45,11 +65,18 @@ class Observability:
         frame_time = AltAz(obstime=midnight_utc + delta_midnight, location=self.site)
 
         for target in target_list:
-            coords = SkyCoord(
-                target_dict[target]["ra"],
-                target_dict[target]["dec"],
-                unit=(u.hour, u.deg),
-            )
+            if isinstance(target_dict[target]["ra"], str):
+                coords = SkyCoord(
+                    target_dict[target]["ra"],
+                    target_dict[target]["dec"],
+                    unit=(u.hour, u.deg),
+                )
+            else:
+                coords = SkyCoord(
+                    target_dict[target]["ra"],
+                    target_dict[target]["dec"],
+                    unit=(u.deg, u.deg),
+                )
 
             obj_altazs = coords.transform_to(frame_time)
             obj_airmass = obj_altazs.secz
@@ -73,7 +100,7 @@ class Observability:
             frame_time
         )
 
-        for sunheight in [-0, -18]:
+        for sunheight, alpha in [(-0, 0.2), (-18, 1)]:
             ax.fill_between(
                 x=delta_midnight.value,
                 y1=(0 * u.deg).value,
@@ -81,7 +108,7 @@ class Observability:
                 where=sunaltazs.alt.value < (sunheight * u.deg).value,
                 color="navy",
                 zorder=0,
-                alpha=0.2,
+                alpha=alpha,
             )
 
         ax.axvline(x=0, color="white", lw=1)
@@ -111,6 +138,6 @@ class Observability:
         plt.legend()
 
         outdir = get_date_dir(self.date)
-        outpath = outdir / "standards.pdf"
+        outpath = outdir / f"{savename}.pdf"
 
         plt.savefig(outpath, bbox_inches="tight")

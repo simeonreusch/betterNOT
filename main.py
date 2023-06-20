@@ -30,11 +30,13 @@ def run():
     date = datetime.date.today().strftime("%Y-%m-%d")
 
     cli_args = parser.parse_args()
+
     if not is_ztf_name(cli_args.name):
         logger.warn(f"Please provide a ZTF name. You entered {cli_args.name}")
 
-    obs = Observability(ztf_id=cli_args.name)
-    obs.plot_standards()
+    cli_args.name = ["ZTF19aatubsj", "ZTF19aapreis", "ZTF21ackxdos"]
+
+    obs = Observability(ztf_ids=cli_args.name)
     # obs.plot_standards()
-    # if cli_args.finding:
-    get_finding_chart(ztf_id=cli_args.name, date=date)
+    obs.plot_targets()
+    # get_finding_chart(ztf_id=cli_args.name, date=date)
