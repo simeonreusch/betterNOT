@@ -22,21 +22,30 @@ logging.getLogger("betternot.findingchart").setLevel(logging.INFO)
 def run():
     parser = argparse.ArgumentParser(description="Various NOT tools")
     parser.add_argument(
-        "name",
+        "names",
         type=str,
-        help='Provide a ZTF name (e.g. "ZTF19aaelulu") or a .txt-file containing a list of ZTF names',
+        nargs="+",
+        help="Provide one or more ZTF names (e.g. ZTF19aaelulu)",
     )
 
     date = datetime.date.today().strftime("%Y-%m-%d")
 
     cli_args = parser.parse_args()
 
-    if not is_ztf_name(cli_args.name):
-        logger.warn(f"Please provide a ZTF name. You entered {cli_args.name}")
+    correct_ids = []
 
-    cli_args.name = ["ZTF19aatubsj", "ZTF19aapreis", "ZTF21ackxdos"]
+    for ztf_id in cli_args.names:
+        if is_ztf_name(ztf_id):
+            correct_ids.append(ztf_id)
 
-    obs = Observability(ztf_ids=cli_args.name)
-    # obs.plot_standards()
+    if len(correct_ids) < len(cli_args.names):
+        malformed = [i for i in cli_args.names if i not in correct_ids]
+        logger.warn(
+            f"Please check that each name is a correct ZTF name. These are malformed and will be skipped now: {', '.join(malformed)}"
+        )
+
+    obs = Observability(ztf_ids=correct_ids)
+    obs.plot_standards()
     obs.plot_targets()
-    # get_finding_chart(ztf_id=cli_args.name, date=date)
+    for ztf_id in correct_ids:
+        get_finding_chart(ztf_id=ztf_id, date=date)

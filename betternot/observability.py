@@ -48,8 +48,6 @@ class Observability:
             else:
                 target_dict.update({ztf_id: {"ra": ra, "dec": dec}})
 
-        print(target_dict)
-
         self.create_plot(target_dict=target_dict, savename="targets")
 
     def create_plot(self, target_dict: dict, savename: str):
@@ -141,3 +139,4 @@ class Observability:
         outpath = outdir / f"{savename}.pdf"
 
         plt.savefig(outpath, bbox_inches="tight")
+        plt.close()
