@@ -57,5 +57,5 @@ def run():
     obs = Observability(ztf_ids=correct_ids, date=date)
     obs.plot_standards()
     obs.plot_targets()
-    for ztf_id in correct_ids:
-        get_finding_chart(ztf_id=ztf_id, date=date)
+    # for ztf_id in correct_ids:
+    #     get_finding_chart(ztf_id=ztf_id, date=date)

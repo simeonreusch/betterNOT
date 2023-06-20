@@ -4,6 +4,7 @@
 
 import datetime
 import logging
+import warnings
 
 import astroplan as ap  # type: ignore
 import astropy  # type: ignore
@@ -110,7 +111,18 @@ class Observability:
                 alpha=alpha,
             )
 
+        # Plot an airmass scale
+        ax2 = ax.secondary_yaxis(
+            "right", functions=(self.altitude_to_airmass, self.airmass_to_altitude)
+        )
+        altitude_ticks = np.linspace(10, 90, 9)
+        airmass_ticks = np.round(self.altitude_to_airmass(altitude_ticks), 2)
+        ax2.set_yticks(airmass_ticks)
+        ax2.set_ylabel("Airmass", fontsize=label_size)
+
         ax.axvline(x=0, color="white", lw=1)
+        ax.axhline(90 - np.arccos(1 / 2.0) * 180 / np.pi, color="#C02F1D")
+        ax.axhline(90 - np.arccos(1 / 3.0) * 180 / np.pi, color="#C02F1D", ls="--")
 
         xmin, xmax = -6, 8
 
@@ -143,3 +155,17 @@ class Observability:
 
         plt.savefig(outpath, bbox_inches="tight")
         plt.close()
+
+    @staticmethod
+    def altitude_to_airmass(airmass):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            altitude = 1.0 / np.cos(np.radians(90 - airmass))
+        return altitude
+
+    @staticmethod
+    def airmass_to_altitude(altitude):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            airmass = 90 - np.degrees(np.arccos(1 / altitude))
+        return airmass
