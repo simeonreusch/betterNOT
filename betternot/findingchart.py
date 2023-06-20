@@ -18,7 +18,9 @@ def get_finding_chart(ztf_id: str):
     url = f"/sources/{ztf_id}/finder?imsize=5&type=png&num_offset_stars=0"
     response = fritz.api(method="get", url=url, stream=True)
 
-    print(f"HTTP code: {response.status_code}, {response.reason}")
+    logger.info(
+        f"Finding chart request for {ztf_id}\nHTTP code: {response.status_code}, {response.reason}"
+    )
     if response.status_code in (200, 400):
         outpath = io.get_object_dir(ztf_id)
 
