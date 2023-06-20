@@ -15,4 +15,4 @@ not ZTF_ID1 ZTF_ID2 ...
 ```
 This will generate a standard star observability plot, create obs plots for all ZTF objects and download finding charts for them from Fritz.
 
-Optionally, you can specify a desired date with `-d YYYY-MM-DD` (the default is today).
+Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today).
