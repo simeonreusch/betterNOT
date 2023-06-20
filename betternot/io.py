@@ -4,13 +4,20 @@
 
 from pathlib import Path
 
-import yaml
+import yaml  # type: ignore
 
 basedir = Path(__file__).parents[1]
 
 
 def get_object_dir(ztf_id: str) -> Path:
     directory = basedir / ztf_id
+    directory.mkdir(parents=True, exist_ok=True)
+
+    return directory
+
+
+def get_date_dir(date: str) -> Path:
+    directory = basedir / date
     directory.mkdir(parents=True, exist_ok=True)
 
     return directory

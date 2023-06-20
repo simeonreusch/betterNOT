@@ -3,6 +3,7 @@
 # License: BSD-3-Clause
 
 import argparse
+import datetime
 import logging
 
 from betternot import fritz
@@ -25,12 +26,8 @@ def run():
         type=str,
         help='Provide a ZTF name (e.g. "ZTF19aaelulu") or a .txt-file containing a list of ZTF names',
     )
-    # parser.add_argument(
-    #     "-finding",
-    #     "-finder",
-    #     action="store_true",
-    #     help="Download a finding chart from Fritz.",
-    # )
+
+    date = datetime.date.today().strftime("%Y-%m-%d")
 
     cli_args = parser.parse_args()
     if not is_ztf_name(cli_args.name):
@@ -40,4 +37,4 @@ def run():
     obs.plot_standards()
     # obs.plot_standards()
     # if cli_args.finding:
-    # get_finding_chart(ztf_id=cli_args.name)
+    get_finding_chart(ztf_id=cli_args.name, date=date)

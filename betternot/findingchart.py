@@ -16,14 +16,14 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def get_finding_chart(ztf_id: str):
+def get_finding_chart(ztf_id: str, date: str):
     url = f"/sources/{ztf_id}/finder?imsize=5&type=png&num_offset_stars=0"
 
     logger.info(f"Issuing finding chart request for {ztf_id}")
     response = fritz.api(method="get", url=url, stream=True)
 
     if response.status_code in (200, 400):
-        outpath = io.get_object_dir(ztf_id)
+        outpath = io.get_date_dir(date)
 
         with open(outpath / f"{ztf_id}_finder.png", "wb") as f:
             shutil.copyfileobj(response.raw, f)
