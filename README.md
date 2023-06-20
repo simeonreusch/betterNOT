@@ -1,7 +1,7 @@
 # betterNOT
-Toolset for preparing observations with the Nordic Optical Telescope (NOT). Currently only set up to work with ZTF transients.
+Toolset for preparing observations with the Nordic Optical Telescope (NOT). Currently only set up to work with ZTF transients. You need [Fritz](https://fritz.science) credentials.
 
-N ote the [observation guidelines](https://notes.simeonreusch.com/s/dHt_0XzwQ#)
+Note the [observation guidelines](https://notes.simeonreusch.com/s/dHt_0XzwQ#)
 
 ## Installation
 Clone the repository, `cd` into it and issue `poetry install`
