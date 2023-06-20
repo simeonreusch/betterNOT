@@ -11,10 +11,6 @@ Clone the repository, `cd` into it and issue `poetry install`
 ## Usage
 The package can be run with a command line interface. Simply issue
 ```
-not [ZTF_ID]
+not ZTF_ID1 ZTF_ID2 ...
 ```
-followed by a set of options. Currently working:
-```
-not [ZTF_ID] -finding
-```
-will download a finding chart for the ZTF object in question.
+This will generate a standard star observability plot, create obs plots for all ZTF objects and download finding charts for them from Fritz.
