@@ -57,7 +57,7 @@ class Observability:
         plt.figure(figsize=(width := 9, width / 1.61))
         ax = plt.subplot(111)
 
-        midnight_utc = Time(self.date, format="isot", scale="utc") + 1
+        midnight_utc = Time(self.date, format="isot", scale="utc") + (1 * u.hour)
         delta_midnight = np.linspace(-12, 12, 1000) * u.hour
 
         frame_time = AltAz(obstime=midnight_utc + delta_midnight, location=self.site)
@@ -82,6 +82,7 @@ class Observability:
             # moon_distance = check_moon(coords, midnight_utc, obs_NOT)
 
             mask = (obj_airmass > 0) & (obj_airmass < 5)
+
             ax.plot(
                 delta_midnight,
                 obj_altazs.alt,
@@ -114,10 +115,12 @@ class Observability:
         xmin, xmax = -6, 8
 
         ax.set_xlim((xmin * u.hour).value, (xmax * u.hour).value)
+
         labels = [
             "{:.0f} h".format(x + 24) if x < 0 else "{:.0f} h".format(x)
             for x in (np.arange(xmax - xmin) + xmin)
         ]
+
         ax.set_xticks(
             ((np.arange(xmax - xmin) + xmin) * u.hour).value, labels=labels, rotation=45
         )
@@ -128,7 +131,7 @@ class Observability:
         ax.set_ylabel("Altitude", fontsize=label_size)
 
         ax.set_title(
-            self.date + " → " + (Time(self.date) + 1).isot.split("T")[0],
+            self.date + " → " + (Time(self.date) + (1 * u.hour)).isot.split("T")[0],
             fontsize=label_size,
         )
 
