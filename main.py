@@ -27,10 +27,20 @@ def run():
         nargs="+",
         help="Provide one or more ZTF names (e.g. ZTF19aaelulu)",
     )
-
-    date = datetime.date.today().strftime("%Y-%m-%d")
+    parser.add_argument(
+        "-date",
+        "-d",
+        type=str,
+        default=None,
+        help="Here you can provide a date in the form YYYY-MM-DD. If none is given, the current day is chosen automatically.",
+    )
 
     cli_args = parser.parse_args()
+
+    if cli_args.date is None:
+        date = datetime.date.today().strftime("%Y-%m-%d")
+    else:
+        date = cli_args.date
 
     correct_ids = []
 
@@ -44,7 +54,7 @@ def run():
             f"Please check that each name is a correct ZTF name. These are malformed and will be skipped now: {', '.join(malformed)}"
         )
 
-    obs = Observability(ztf_ids=correct_ids)
+    obs = Observability(ztf_ids=correct_ids, date=date)
     obs.plot_standards()
     obs.plot_targets()
     for ztf_id in correct_ids:
