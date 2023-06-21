@@ -145,7 +145,7 @@ class Observability:
         ax.set_ylabel("Altitude", fontsize=label_size)
 
         ax.set_title(
-            self.date + " → " + (Time(self.date) + (1 * u.hour)).isot.split("T")[0],
+            self.date + " → " + (Time(self.date) + (1 * u.day)).isot.split("T")[0],
             fontsize=label_size,
         )
 
