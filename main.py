@@ -34,6 +34,13 @@ def run():
         default=None,
         help="Here you can provide a date in the form YYYY-MM-DD. If none is given, the current day is chosen automatically.",
     )
+    parser.add_argument(
+        "-site",
+        "-s",
+        type=str,
+        default="not",
+        help="Here you can provide a desired observation site. Defaults to La Palma.",
+    )
 
     cli_args = parser.parse_args()
 
@@ -54,8 +61,8 @@ def run():
             f"Please check that each name is a correct ZTF name. These are malformed and will be skipped now: {', '.join(malformed)}"
         )
 
-    obs = Observability(ztf_ids=correct_ids, date=date)
+    obs = Observability(ztf_ids=correct_ids, date=date, site=cli_args.site)
     obs.plot_standards()
     obs.plot_targets()
-    # for ztf_id in correct_ids:
-    #     get_finding_chart(ztf_id=ztf_id, date=date)
+    for ztf_id in correct_ids:
+        get_finding_chart(ztf_id=ztf_id, date=date)

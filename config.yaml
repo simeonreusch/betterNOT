@@ -17,3 +17,10 @@ standards:
     SP2317-054:
       ra: "23:19:58.3996"
       dec: "-05:09:56.171"
+sites:
+  not: 
+    short: lapalma
+    pretty: NOT Observatory (on La Palma)
+  lbt: 
+    short: lbt
+    pretty: Large Binocular Telescope

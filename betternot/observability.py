@@ -14,12 +14,11 @@ from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from astropy import units as u  # type: ignore
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_body  # type: ignore
 from astropy.time import Time  # type: ignore
-
 from betternot.io import get_date_dir, load_config
 
 
 class Observability:
-    def __init__(self, ztf_ids, date: str | None = None):
+    def __init__(self, ztf_ids, date: str | None = None, site: str = "not"):
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.INFO)
 
@@ -30,8 +29,11 @@ class Observability:
         else:
             self.date = date
 
-        self.site = EarthLocation.of_site("lapalma")
         self.config = load_config()
+        self.site = EarthLocation.of_site(self.config["sites"][site]["short"])
+        self.logger.info(
+            f"Getting observation data for {', '.join(ztf_ids)} for the {self.config['sites'][site]['pretty']}. Chosen date: {self.date}"
+        )
 
     def plot_standards(self):
         std_dict = self.config["standards"]
