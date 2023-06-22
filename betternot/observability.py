@@ -14,6 +14,7 @@ from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from astropy import units as u  # type: ignore
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_body  # type: ignore
 from astropy.time import Time  # type: ignore
+
 from betternot.io import get_date_dir, load_config
 
 

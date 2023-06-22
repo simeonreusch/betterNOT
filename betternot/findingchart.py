@@ -17,9 +17,14 @@ logger.setLevel(logging.INFO)
 
 
 def get_finding_chart(ztf_id: str, date: str):
-    url = f"/sources/{ztf_id}/finder?imsize=5&type=png&num_offset_stars=0"
+    """
+    Download a finding chart from Fritz
+    """
 
-    logger.info(f"Issuing finding chart request for {ztf_id}")
+    date_full = date + "T12:00:00"
+    url = f"/sources/{ztf_id}/finder?imsize=5&type=png&num_offset_stars=0&obstime={date_full}"
+
+    logger.info(f"Issuing finding chart request for {ztf_id} and date {date}")
     response = fritz.api(method="get", url=url, stream=True)
 
     if response.status_code in (200, 400):

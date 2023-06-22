@@ -27,6 +27,7 @@ def radec(ztf_id: str):
     Get RA and Dec of a source, specified by its ZTF-ID
     """
     response = api(method="get", url=f"/sources/{ztf_id}")
+    print(response)
     if response.status_code in (200, 400):
         res = response.json()
         ra = res["data"].get("ra")
