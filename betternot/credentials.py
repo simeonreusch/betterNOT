@@ -9,7 +9,7 @@ import warnings
 from os import environ
 
 import keyring
-from ztfquery import io
+from ztfquery import io  # type: ignore
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -20,7 +20,8 @@ HEADLESS = False
 if environ.get("BETTERNOT_MODE") == "HEADLESS":
     HEADLESS = True
 
-def get_user_and_password(service: str = None):
+
+def get_user_and_password(service: str):
     """ """
     # Default: Try the systemwide keychain - fully encrypted
     # (works at least on Debian, Ubuntu and Mac)
@@ -51,7 +52,7 @@ def get_user_and_password(service: str = None):
         return username, password
 
 
-def get_user(service: str = None):
+def get_user(service: str):
     if not HEADLESS:
         try:
             username = keyring.get_password(service, f"{service}_user")
@@ -75,7 +76,7 @@ def get_user(service: str = None):
     return username
 
 
-def get_password(service: str = None):
+def get_password(service: str):
     """ """
     if not HEADLESS:
         try:

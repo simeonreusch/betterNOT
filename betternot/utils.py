@@ -9,4 +9,7 @@ def is_ztf_name(name: str) -> bool:
     """
     Checks if a string adheres to the ZTF naming scheme
     """
-    return re.match(r"^ZTF[1-2]\d[a-z]{7}$", name)
+    if re.match(r"^ZTF[1-2]\d[a-z]{7}$", name):
+        return True
+    else:
+        return False
