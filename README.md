@@ -11,8 +11,8 @@ Clone the repository, `cd` into it and issue `poetry install`
 ## Usage
 The package can be run with a command line interface. Simply issue
 ```
-not ZTF_ID1 ZTF_ID2 ...
+not ZTF23changeit ZTF23thistoo ...
 ```
-This will generate a standard star observability plot, create obs plots for all ZTF objects and download finding charts for them from Fritz.
+This will generate a standard star observability plot, create obs plots for all ZTF objects, download the finding charts for them from Fritz and print the coordinates as well as the last observed magnitude.
 
 Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today).
