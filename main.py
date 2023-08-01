@@ -20,6 +20,9 @@ logging.getLogger("betternot.findingchart").setLevel(logging.INFO)
 
 
 def run():
+    """
+    This is invoked on the command line by `not`
+    """
     parser = argparse.ArgumentParser(description="Various NOT tools")
     parser.add_argument(
         "names",
@@ -62,7 +65,8 @@ def run():
         )
 
     obs = Observability(ztf_ids=correct_ids, date=date, site=cli_args.site)
-    obs.plot_standards()
-    obs.plot_targets()
-    for ztf_id in correct_ids:
-        get_finding_chart(ztf_id=ztf_id, date=date)
+    obs.print_info()
+    # obs.plot_standards()
+    # obs.plot_targets()
+    # for ztf_id in correct_ids:
+    #     get_finding_chart(ztf_id=ztf_id, date=date)

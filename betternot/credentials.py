@@ -22,9 +22,10 @@ if environ.get("BETTERNOT_MODE") == "HEADLESS":
 
 
 def get_user_and_password(service: str):
-    """ """
-    # Default: Try the systemwide keychain - fully encrypted
-    # (works at least on Debian, Ubuntu and Mac)
+    """
+    Default: Try the systemwide keychain - fully encrypted
+    (works at least on Debian, Ubuntu and Mac)
+    """
     if not HEADLESS:
         try:
             username = keyring.get_password(service, f"{service}_user")
@@ -53,6 +54,7 @@ def get_user_and_password(service: str):
 
 
 def get_user(service: str):
+    """ """
     if not HEADLESS:
         try:
             username = keyring.get_password(service, f"{service}_user")

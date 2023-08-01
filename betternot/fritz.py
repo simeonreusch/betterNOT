@@ -4,7 +4,6 @@
 
 import backoff  # type: ignore
 import requests
-
 from betternot import credentials
 
 FRITZ_TOKEN = credentials.get_password(service="fritz_api")
@@ -46,3 +45,25 @@ def radec(ztf_id: str):
     dec = res["data"].get("dec")
 
     return (ra, dec)
+
+
+def latest_photometry(ztf_id: str):
+    """
+    Retrieve the photometry of a source, specified by its ZTF-ID
+    """
+    response = api(method="get", url=f"/sources/{ztf_id}/photometry")
+
+    phot_all = response.json().get("data")
+    # latest = photdata[-1]
+    # mag = latest[""]
+    phot_dets = []
+    for entry in phot_all:
+        if entry["mag"] != None:
+            phot_dets.append(entry)
+
+    latest = phot_dets[-1]
+    mag = latest["mag"]
+    mjd = latest["mjd"]
+    band = latest["filter"]
+
+    return (mag, mjd, band)
