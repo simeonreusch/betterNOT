@@ -66,11 +66,19 @@ class Observability:
         for ztf_id, info in self.target_dict.items():
             now = Time.now().mjd
             days_ago = now - info["mjd"]
-
+            coords = SkyCoord(
+                info["ra"],
+                info["dec"],
+                unit=(u.deg, u.deg),
+            )
+            coords_str = coords.to_string(style="hmsdms")
+            ra, dec = coords_str.split(" ")
+            ra = ra.replace("h", ":").replace("m", ":").replace("s", "")
+            dec = dec.replace("d", ":").replace("m", ":").replace("s", "")
             print("-------------------------------------------")
             print(ztf_id)
-            print(f"RA: {info['ra']}")
-            print(f"Dec: {info['dec']}")
+            print(f"RA: {ra}")
+            print(f"Dec: {dec}")
             print(
                 f"{info['mag']:.2f} mag {days_ago:.0f} days ago in the {info['band']} filter"
             )
