@@ -15,6 +15,7 @@ from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from astropy import units as u  # type: ignore
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_body  # type: ignore
 from astropy.time import Time  # type: ignore
+
 from betternot.io import get_date_dir, load_config
 
 
@@ -77,6 +78,7 @@ class Observability:
             dec = dec.replace("d", ":").replace("m", ":").replace("s", "")
             print("-------------------------------------------")
             print(ztf_id)
+            print(f"ztf{ztf_id[3:]}")
             print(f"RA: {ra}")
             print(f"Dec: {dec}")
             print(
