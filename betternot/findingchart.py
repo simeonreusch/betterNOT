@@ -30,8 +30,8 @@ def get_finding_chart(ztf_id: str, date: str):
     if response.status_code in (200, 400):
         outpath = io.get_date_dir(date)
 
-        with open(outpath / f"{ztf_id}_finder.png", "wb") as f:
+        with open(outpath / f"{ztf_id}_{date.replace('-','_')}.png", "wb") as f:
             shutil.copyfileobj(response.raw, f)
         logger.info(
-            f"Downloaded finding chart for {ztf_id} to {outpath / f'{ztf_id}_finder.png'}"
+            f"Downloaded finding chart for {ztf_id} to {outpath / f'{ztf_id}_{date}.png'}"
         )
