@@ -1,0 +1,42 @@
+objects:
+- iau_name: 2016ai
+  ra: '09:24:26.46'
+  decl: '+05:10:14.74'
+  groupid: '1'
+  obj_related_files:
+  - related_file_name: ''
+    related_file_comments: ''
+  spectra:
+    spectra_group:
+    - ascii_file: fillme
+      fits_file: ''
+      publish: ''
+      contrib: ''
+      obsdate: '2023-01-01 15:48:00'
+      instrumentid: '41'
+      exptime: '350'
+      WL_unitid: '11'
+      flux_unit_coeff: '1e-17'
+      flux_unitid: '6'
+      wl_medium_id: '2'
+      flux_calib_by_id: '1'
+      extinction_corr_id: '1'
+      observer: Simeon Reusch, Jesper Sollerman
+      reducer: Simeon Reusch
+      reduction_date: ''
+      slit: ''
+      dichroic: ''
+      grism: ''
+      grating: ''
+      blaze: ''
+      airmass: ''
+      ha: ''
+      spectypeid: '10'
+      qualityid: '2'
+      spec_proprietary_period:
+        spec_proprietary_period_value: '2'
+        spec_proprietary_period_units: years
+      spec_proprietary_period_groups:
+      - '62'
+      remarks: ''
+      related_files: ''
