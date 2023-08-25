@@ -1,5 +1,5 @@
 objects:
-- iau_name: 2016ai
+- iau_name: 2023grp
   ra: '09:24:26.46'
   decl: '+05:10:14.74'
   groupid: '62'
@@ -13,8 +13,9 @@ objects:
       publish: ''
       contrib: ''
       obsdate: '2023-01-01 15:48:00'
+      groupid: '62'
       instrumentid: '41'
-      exptime: '350'
+      exptime: '3500'
       WL_unitid: '11'
       flux_unit_coeff: '1e-17'
       flux_unitid: '6'
