@@ -357,8 +357,7 @@ logger.setLevel(logging.DEBUG)
 ra = "17:09:06.859"
 dec = "+26:51:20.50"
 
-search_tns(ra=ra, dec=dec)
-quit()
+
 # WISeREP server
 # WISeREP="www.wiserep.org"
 WISeREP = "sandbox.wiserep.org"
