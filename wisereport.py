@@ -83,7 +83,7 @@ def upload_files(url, list_of_files):
         return [None, "Error message : \n" + str(e)]
 
 
-def search_tns():
+def search_tns(ra, dec):
     """
     Query the TNS API for a given location
     """
@@ -95,7 +95,7 @@ def search_tns():
     tns_bot_id = "115364"
     tns_bot_name = "ZTF_DESY"
 
-    queryurl_tns = "https://www.wis-tns.org/api/get/object"
+    queryurl_tns = "https://www.wis-tns.org/api/get/search"
 
     tns_marker = (
         'tns_marker{"tns_id": "'
@@ -107,16 +107,10 @@ def search_tns():
     headers = {"User-Agent": tns_marker}
 
     get_obj = {
-        "ra": "05:24:18.0",
-        "dec": "+09:10:37.0",
-        "radius": "300",
+        "ra": ra,
+        "dec": dec,
+        "radius": 3,
         "units": "arcsec",
-        # "objname": "",
-        # "objname_exact_match": 0,
-        # "internal_name": "Gaia16azh",
-        "internal_name_exact_match ": 0,
-        "objid": "",
-        "public_timestamp": "",
     }
 
     json_file = json.dumps(get_obj)
@@ -125,8 +119,18 @@ def search_tns():
 
     response = requests.post(queryurl_tns, headers=headers, data=get_data)
 
-    logger.info(response.json())
-    quit()
+    res_json = response.json()
+    reply = res_json["data"]["reply"]
+
+    if len(reply) > 0:
+        tns_name = reply[0]["objname"]
+        logger.info(f"Found match on TNS: {tns_name}")
+    else:
+        tns_name = None
+
+        logger.info("Found no match on TNS.")
+
+    return tns_name
 
 
 # function that checks response and
@@ -350,8 +354,11 @@ logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-# search_tns()
-# quit()
+ra = "17:09:06.859"
+dec = "+26:51:20.50"
+
+search_tns(ra=ra, dec=dec)
+quit()
 # WISeREP server
 # WISeREP="www.wiserep.org"
 WISeREP = "sandbox.wiserep.org"
