@@ -2,7 +2,7 @@ objects:
 - iau_name: 2016ai
   ra: '09:24:26.46'
   decl: '+05:10:14.74'
-  groupid: '1'
+  groupid: '62'
   obj_related_files:
   - related_file_name: ''
     related_file_comments: ''
@@ -20,9 +20,9 @@ objects:
       flux_unitid: '6'
       wl_medium_id: '2'
       flux_calib_by_id: '1'
-      extinction_corr_id: '1'
+      extinction_corr_id: '0'
       observer: Simeon Reusch, Jesper Sollerman
-      reducer: Simeon Reusch
+      reducer: Simeon Reusch / PypeIt
       reduction_date: ''
       slit: ''
       dichroic: ''
@@ -32,7 +32,7 @@ objects:
       airmass: ''
       ha: ''
       spectypeid: '10'
-      qualityid: '2'
+      qualityid: '2' #1: low, 3: high
       spec_proprietary_period:
         spec_proprietary_period_value: '2'
         spec_proprietary_period_units: years

@@ -2,9 +2,9 @@
 # DATE=$(date -v -1d +%Y-%m-%d)
 
 
-DATE="2023-08-23"
+DATE="2023-08-24"
 STANDARD="SP2209+178"
-declare -a OBJECTS=("ZTF23aahnmag")
+declare -a OBJECTS=("ZTF23aaspcfl" "ZTF23aalftvv")
 
 DL_DIR="/Users/simeon/Downloads"
 PYPEIT_DIR="/Users/simeon/not/pypeit_alfosc_env"
