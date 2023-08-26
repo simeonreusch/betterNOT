@@ -22,7 +22,7 @@ importlib-metadata = "^6.7.0"
 ztfquery = "^1.26.1"
 astroplan = "^0.9"
 
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.dev-dependencies]
 black = "^23.3.0"
 isort = "^5.12.0"
 pytest = "^7.3.2"
