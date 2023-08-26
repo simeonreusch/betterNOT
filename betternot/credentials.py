@@ -21,6 +21,8 @@ try:
 except keyring.errors.NoKeyringError:
     keyring_available = False
 
+keyring_available = False
+
 
 def get_credentials(service, token=False):
     credentials = {}
