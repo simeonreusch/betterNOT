@@ -5,6 +5,7 @@ __pycache__/
 .DS_Store
 poetry.lock
 ZTF*
+!ZTF23aaawbsc_combined_3850.ascii
 202*
 
 # C extensions
