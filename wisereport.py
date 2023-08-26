@@ -64,6 +64,8 @@ def upload_files(url, list_of_files):
         api_data = {api_key_json_keyword: api_key}
         # construct a dictionary of files and their data
         files_data = {}
+        print(type(list_of_files))
+        print(list_of_files)
         for i in range(len(list_of_files)):
             file_name = list_of_files[i]
             file_path = os.path.join(files_folder, file_name)
@@ -74,6 +76,7 @@ def upload_files(url, list_of_files):
                 value = (file_name, open(file_path, "rb"), "application/fits")
             files_data[key] = value
         # upload all files using request module
+
         response = requests.post(
             upload_url, headers=headers, data=api_data, files=files_data
         )
@@ -227,10 +230,16 @@ def send_json_report(url, json_report):
 
         json_read = format_to_json(open(json_report).read())
 
+
         json_payload = {api_key_json_keyword: api_key, "data": json_read}
 
-        response = requests.post(json_url, headers=headers, data=json_payload)
+        print(json_url)
+        print(headers)
+        print(json_payload)
 
+        response = requests.post(json_url, headers=headers, data=json_payload)
+        print(response.json())
+        quit()
         return response
 
     except Exception as e:
@@ -285,6 +294,8 @@ def print_reply(url, report_id):
         time.sleep(TIME_SLEEP)
         # reply response as json data
         json_data = reply_res.json()
+        print(json_data)
+        quit()
         # print feedback of the response
         logger.info('"feedback":')
         logger.info(f"{json.dumps(json_data['data']['feedback'], indent=4)}\n")
@@ -386,7 +397,7 @@ upload_res = upload(URL_WIS_API, FILES)
 # sending JSON metadata
 if upload_res != False:
     spec_server_name = upload_res[0]
-    with open("template.yaml", "r") as stream:
+    with open("data/template.yaml", "r") as stream:
         try:
             metadata = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
