@@ -89,6 +89,10 @@ class Wiserep:
         # I have no idea why the token is not in the header
         get_data = {"api_key": TNS_TOKEN, "data": json_file}
 
+        print(headers)
+        print(get_data)
+        print("-------")
+
         response = requests.post(queryurl_tns, headers=headers, data=get_data)
 
         res_json = response.json()
