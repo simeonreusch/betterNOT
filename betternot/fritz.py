@@ -7,7 +7,7 @@ import requests
 
 from betternot import credentials
 
-FRITZ_TOKEN = credentials.get_credentials(service="fritz_api", token=True)["token"]
+FRITZ_TOKEN = credentials.get_credentials(service="FRITZ", token=True)["token"]
 BASE_URL = "https://fritz.science/api"
 
 

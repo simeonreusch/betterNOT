@@ -55,7 +55,8 @@ class Wiserep:
             if server_filename is not None:
                 self.read_spectrum(server_filename=server_filename)
                 self.generate_report()
-                self.send_metadata()
+                res = self.send_metadata()
+                self.res = res
 
     def query_tns(self) -> str | None:
         """
@@ -244,3 +245,5 @@ class Wiserep:
 
         if res is not None:
             self.logger.debug(res)
+
+        return res
