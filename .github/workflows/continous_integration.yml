@@ -41,7 +41,7 @@ jobs:
       # Install poetry
       - name: Install poetry and coveralls
         run: >-
-          python -m pip install --upgrade poetry coveralls
+          python -m pip install --upgrade poetry coveralls pytest
 
      # Setting up dependencies
       - name: Install dependencies (with all extras)
