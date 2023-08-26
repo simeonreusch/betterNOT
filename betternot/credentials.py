@@ -72,7 +72,6 @@ def get_credentials(service, token=False):
             credentials.update({"token": token})
 
     print(service)
-    print(len(credentials["token"]))
-    print("\n\n\n")
+    print(credentials["token"][0])
 
     return credentials
