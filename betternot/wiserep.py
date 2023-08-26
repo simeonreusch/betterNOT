@@ -12,6 +12,7 @@ from pathlib import Path
 import requests
 import yaml
 from astropy.io import ascii
+
 from betternot import credentials
 from betternot.fritz import radec
 
@@ -27,7 +28,6 @@ class Wiserep:
     """Upload a spectrum to WISeREP"""
 
     def __init__(self, ztf_id: str, spec_path: Path | str, sandbox: bool = True):
-        super(Wiserep, self).__init__()
         self.logger = logging.getLogger()
         self.ztf_id = ztf_id
         self.spec_path = Path(spec_path)
@@ -89,7 +89,7 @@ class Wiserep:
 
         return tns_name
 
-    def read_spectrum(self, server_filename:str|None=None):
+    def read_spectrum(self, server_filename: str | None = None):
         """
         Open the spectrum ascii file and extract metadata
         """
@@ -97,21 +97,29 @@ class Wiserep:
         meta = data.meta["comments"]
         metadict = {}
 
+        ncombine = 1
+        exptime = 0
+
         for entry in meta:
             keyval = entry.split("=")
             if len(keyval) > 1:
                 key = keyval[0]
                 val = keyval[1]
-                if key == "HOME_OBSERVER":
+                if key == "HOME_OBSERVER" or key == "OBSERVER":
                     observer = val
                     metadict.update({"observer": val})
                 elif key == "REDUCER":
                     metadict.update({"reducer": val})
-                elif key == "INTTIME":
-                    metadict.update({"exptime": val})
+                elif key == "EXPTIME":
+                    exptime = int(float(val))
                 elif key == "DATE-OBS":
                     metadict.update({"obsdate": val.replace("T", " ")})
-        
+                elif key == "NCOMBINE":
+                    ncombine = int(val)
+
+        inttime = ncombine * exptime
+        metadict.update({"exptime": inttime})
+
         if server_filename is not None:
             metadict.update({"ascii_file": server_filename})
         else:
@@ -124,7 +132,7 @@ class Wiserep:
 
         self.metadata = metadict
 
-    def generate_report(self, tns_name: str|None=None):
+    def generate_report(self, tns_name: str | None = None):
         """
         Open and fill the template spectrum report with the metadata of the spectrum
         """
@@ -137,18 +145,20 @@ class Wiserep:
 
         if tns_name is None:
             tns_name = self.tns_name
-        
+
         report["objects"][0]["iau_name"] = tns_name
         report["objects"][0]["ra"] = self.ra
         report["objects"][0]["decl"] = self.dec
 
         self.report = report
 
-    def upload_files(self, file_list: list[Path]) -> list|None:
+    def upload_files(self, file_list: list[Path]) -> list | None:
         """
         Upload a file to WISErEP and check the response
         """
-        self.logger.info(f"Uploading {' '.join(str(x) for x in file_list)} to the WISeREP")
+        self.logger.info(
+            f"Uploading {' '.join(str(x) for x in file_list)} to the WISeREP"
+        )
         url = self.wiserep_endpoint + "/file-upload"
 
         headers = {
@@ -163,34 +173,36 @@ class Wiserep:
         # construct a dictionary of files and their data
         files_data = {}
         for i, path in enumerate(file_list):
-        #     file_name = list_of_files[i]
-        #     file_path = os.path.join(files_folder, file_name)
+            #     file_name = list_of_files[i]
+            #     file_path = os.path.join(files_folder, file_name)
             key = "files[" + str(i) + "]"
             val = (str(path), open(path), "text/plain")
             files_data[key] = val
 
-        response = requests.post(
-            url, headers=headers, data=api_data, files=files_data
-        )
-        
+        response = requests.post(url, headers=headers, data=api_data, files=files_data)
+
         if response.status_code == 200:
             server_filenames = response.json()["data"]
-            self.logger.debug(f"Received and saved as {server_filenames} on the WISeREP server")
+            self.logger.debug(
+                f"Received and saved as {server_filenames} on the WISeREP server"
+            )
             return server_filenames
         else:
-            self.logger.warn(f"Something went wrong. Reponse code: {response.status_code}")
+            self.logger.warn(
+                f"Something went wrong. Reponse code: {response.status_code}"
+            )
             return None
-    
+
     # function for sending json metadata
     def send_json_report(self, json_report: dict):
-
         report_url = self.wiserep_endpoint + "/bulk-report"
         # headers
         headers = {
-            "User-Agent": 'tns_marker{"tns_id":' + str(WISEREP_BOT_ID) + ', "type":"bot",'
+            "User-Agent": 'tns_marker{"tns_id":'
+            + str(WISEREP_BOT_ID)
+            + ', "type":"bot",'
             ' "name":"' + WISEREP_BOT_NAME + '"}'
         }
-
 
         payload = {"bot_api_key": WISEREP_TOKEN, "data": json_report}
 
@@ -199,9 +211,11 @@ class Wiserep:
         if response.status_code == 200:
             return response.json()
         else:
-            self.logger.warn(f"Something went wrong. Reponse code: {response.status_code}")
+            self.logger.warn(
+                f"Something went wrong. Reponse code: {response.status_code}"
+            )
             return None
-    
+
     def send_metadata(self, report: str | None = None):
         """
         Send the metadata for a spectrum to WISeREP
@@ -210,9 +224,11 @@ class Wiserep:
             report = self.report
 
         json_report = json.dumps(report)
-        
+
         res = self.send_json_report(json_report=json_report)
-        print(res)
+
+        if res is not None:
+            self.logger.debug(res)
 
     # time.sleep(TIME_SLEEP)
     # response = upload_files(url, list_of_files)
