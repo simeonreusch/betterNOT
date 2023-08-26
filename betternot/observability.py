@@ -6,16 +6,16 @@ import datetime
 import logging
 import warnings
 
-import astroplan as ap  # type: ignore
 import astropy  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np
-from astroplan import moon as apmoon  # type: ignore
-from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from astropy import units as u  # type: ignore
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_body  # type: ignore
 from astropy.time import Time  # type: ignore
 
+import astroplan as ap  # type: ignore
+from astroplan import moon as apmoon  # type: ignore
+from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from betternot.io import get_date_dir, load_config
 
 
@@ -33,7 +33,7 @@ class Observability:
 
         self.config = load_config()
         self.site = EarthLocation.of_site(self.config["sites"][site]["short"])
-        self.target_dict = {}
+        self.target_dict: dict = {}
         self.logger.info(
             f"Getting observation data for {', '.join(ztf_ids)} for the {self.config['sites'][site]['pretty']}. Chosen date: {self.date}"
         )

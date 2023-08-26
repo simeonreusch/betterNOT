@@ -11,7 +11,7 @@ from pathlib import Path
 
 import requests
 import yaml
-from astropy.io import ascii
+from astropy.io import ascii  # type: ignore
 
 from betternot import credentials
 from betternot.fritz import radec
@@ -25,7 +25,9 @@ WISEREP_BOT_NAME = "OKC_ZTF"
 
 
 class Wiserep:
-    """Upload a spectrum to WISeREP"""
+    """
+    Upload a spectrum to WISeREP
+    """
 
     def __init__(self, ztf_id: str, spec_path: Path | str, sandbox: bool = True):
         self.logger = logging.getLogger()
@@ -43,11 +45,12 @@ class Wiserep:
 
         if self.tns_name is not None:
             server_filename = self.upload_files([self.spec_path])[0]
-            self.read_spectrum(server_filename=server_filename)
-            self.generate_report()
-            self.send_metadata()
+            if server_filename is not None:
+                self.read_spectrum(server_filename=server_filename)
+                self.generate_report()
+                self.send_metadata()
 
-    def query_tns(self):
+    def query_tns(self) -> str | None:
         """
         Check if the object is known on TNS (so we can use the ID on WISeREP, I have not figured out how to do a WISeREP cone search.)
         """
@@ -152,7 +155,7 @@ class Wiserep:
 
         self.report = report
 
-    def upload_files(self, file_list: list[Path]) -> list | None:
+    def upload_files(self, file_list: list[Path]) -> list:
         """
         Upload a file to WISErEP and check the response
         """
@@ -170,11 +173,10 @@ class Wiserep:
 
         # api key data
         api_data = {"bot_api_key": WISEREP_TOKEN}
-        # construct a dictionary of files and their data
+
+        # construct a dictionary of files and file handles
         files_data = {}
         for i, path in enumerate(file_list):
-            #     file_name = list_of_files[i]
-            #     file_path = os.path.join(files_folder, file_name)
             key = "files[" + str(i) + "]"
             val = (str(path), open(path), "text/plain")
             files_data[key] = val
@@ -191,10 +193,10 @@ class Wiserep:
             self.logger.warn(
                 f"Something went wrong. Reponse code: {response.status_code}"
             )
-            return None
+            return [None]
 
     # function for sending json metadata
-    def send_json_report(self, json_report: dict):
+    def send_json_report(self, json_report: str):
         report_url = self.wiserep_endpoint + "/bulk-report"
         # headers
         headers = {
@@ -229,25 +231,3 @@ class Wiserep:
 
         if res is not None:
             self.logger.debug(res)
-
-    # time.sleep(TIME_SLEEP)
-    # response = upload_files(url, list_of_files)
-    # response_check = check_response(response)
-    # time.sleep(TIME_SLEEP)
-    # # if files are uploaded
-    # if response_check == True:
-    #     logger.info("\nThe following files were uploaded on the WISeREP : \n")
-    #     time.sleep(TIME_SLEEP)
-    #     # response as json data
-    #     json_data = response.json()
-    #     # list of uploaded files
-    #     uploaded_files = json_data["data"]
-    #     for i in range(len(uploaded_files)):
-    #         logger.info(f"filename: {str(uploaded_files[i])}")
-
-    #     time.sleep(TIME_SLEEP)
-    #     return uploaded_files
-    # else:
-    #     logger.info("\nFiles were not uploaded to the WISeREP.\n")
-    #     time.sleep(TIME_SLEEP)
-    #     return False
