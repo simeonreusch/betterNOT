@@ -20,7 +20,12 @@ Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default 
 ### Uploading spectra to WISeREP
 You will need a [TNS](https://www.wis-tns.org) and [WISeREP](https://www.wiserep.org) bot token for this. Uploading spectra can be done as follows:
 ```python
+import logging
 from betternot.wiserep import Wiserep
+
+logging.basicConfig()
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 Wiserep(
     ztf_id="ZTF23aaawbsc",
