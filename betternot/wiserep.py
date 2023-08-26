@@ -84,14 +84,15 @@ class Wiserep:
             "units": "arcsec",
         }
 
-        json_file = json.dumps(get_obj)
+        json_string = json.dumps(get_obj)
 
         # I have no idea why the token is not in the header
-        get_data = {"api_key": TNS_TOKEN, "data": json_file}
+        get_data = {"api_key": TNS_TOKEN, "data": json_string}
+
+        print(queryurl_tns)
+        print(get_data)
 
         response = requests.post(queryurl_tns, headers=headers, data=get_data)
-
-        print(response)
 
         if response.status_code != 200:
             self.logger.warn(
