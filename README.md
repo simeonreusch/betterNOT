@@ -28,4 +28,6 @@ Wiserep(
     sandbox=True,
 )
 ```
+This will open the file, extract the metadata, upload the file to WISeREP as well as a report containing the extracted metadata.
+
 After checking with the (WISeREP sandbox)[https://sandbox.wiserep.org] that everythin works fine, use `sandbox=False`
