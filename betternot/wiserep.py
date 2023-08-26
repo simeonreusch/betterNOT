@@ -190,6 +190,7 @@ class Wiserep:
 
         # api key data
         api_data = {"bot_api_key": WISEREP_TOKEN}
+        print(api_data)
 
         # construct a dictionary of files and file handles
         files_data = {}
@@ -198,6 +199,7 @@ class Wiserep:
             val = (str(path), open(path), "text/plain")
             files_data[key] = val
 
+        print(files_data)
         response = requests.post(url, headers=headers, data=api_data, files=files_data)
 
         if response.status_code == 200:
