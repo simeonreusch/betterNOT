@@ -4,9 +4,10 @@
 
 import backoff  # type: ignore
 import requests
+
 from betternot import credentials
 
-FRITZ_TOKEN = credentials.get_password(service="fritz_api")
+FRITZ_TOKEN = credentials.get_credentials(service="fritz_api", token=True)["token"]
 BASE_URL = "https://fritz.science/api"
 
 

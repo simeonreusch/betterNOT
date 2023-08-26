@@ -16,10 +16,10 @@ from astropy.io import ascii  # type: ignore
 from betternot import credentials
 from betternot.fritz import radec
 
-TNS_TOKEN = credentials.get_password(service="tns_token")
+TNS_TOKEN = credentials.get_credentials(service="TNS", token=True)["token"]
 TNS_BOT_ID = "115364"
 TNS_BOT_NAME = "ZTF_DESY"
-WISEREP_TOKEN = credentials.get_password(service="wiserep_token")
+WISEREP_TOKEN = credentials.get_credentials(service="WISEREP", token=True)["token"]
 WISEREP_BOT_ID = "1234"
 WISEREP_BOT_NAME = "OKC_ZTF"
 

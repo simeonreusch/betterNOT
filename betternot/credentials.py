@@ -14,93 +14,59 @@ from ztfquery import io  # type: ignore
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-HEADLESS = False
+try:
+    keyring.get_password("dummy", f"dummyfi_user")
+    # get_credentials("dummy", f"dummyfi_user")
+    keyring_available = True
+except keyring.errors.NoKeyringError:
+    keyring_available = False
 
 
-if environ.get("BETTERNOT_MODE") == "HEADLESS":
-    HEADLESS = True
-
-
-def get_user_and_password(service: str):
-    """
-    Default: Try the systemwide keychain - fully encrypted
-    (works at least on Debian, Ubuntu and Mac)
-    """
-    if not HEADLESS:
-        try:
+def get_credentials(service, token=False):
+    credentials = {}
+    if keyring_available is True:
+        if token is False:
             username = keyring.get_password(service, f"{service}_user")
             password = keyring.get_password(service, f"{service}_password")
 
             if username is None:
                 username = input(f"Enter your {service} login: ")
+
                 password = getpass.getpass(
                     prompt=f"Enter your {service} password: ", stream=None
                 )
                 keyring.set_password(service, f"{service}_user", username)
                 keyring.set_password(service, f"{service}_password", password)
+                logger.info(f"Got {service} credentials")
+            credentials.update({"user": username, "password": password})
 
-            logger.info(f"Got {service} credentials")
+        if token is True:
+            token = keyring.get_password(service, f"{service}_token")
+            if token is None:
+                token = getpass.getpass(
+                    prompt=f"Enter your {service} token: ", stream=None
+                )
+                keyring.set_password(service, f"{service}_token", token)
+                logger.info(f"Got {service} credentials")
+            credentials.update({"token": token})
 
-            return username, password
-
-        # Some systems don't provide the luxury of a system-wide keychain
-        # Use workaround with base64 obfuscation
-        except keyring.errors.NoKeyringError:
-            username, password = io._load_id_(service)
-            return username, password
-    else:
-        username, password = io._load_id_(service)
-        return username, password
-
-
-def get_user(service: str):
-    """ """
-    if not HEADLESS:
-        try:
-            username = keyring.get_password(service, f"{service}_user")
+    if keyring_available is False:
+        if token is False:
+            username = os.environ.get(f"{service}_user")
+            password = os.environ.get(f"{service}_password")
 
             if username is None:
-                username = input(f"Enter your {service} login: ")
-                keyring.set_password(service, f"{service}_user", username)
+                username, password = io._load_id_(service)
+            credentials.update({"user": username, "password": password})
 
-        except keyring.errors.NoKeyringError:
-            logger.info(
-                f"This is a workaround using base64 obfuscation. If it asks for input: Enter the {service} username and an arbitrary password."
-            )
-            username, _ = io._load_id_(service)
-    else:
-        logger.info(
-            f"This is a workaround using base64 obfuscation. If it asks for input: Enter the {service} username and an arbitrary password."
-        )
-        username, _ = io._load_id_(service)
+        if token is True:
+            token = os.environ.get(f"{service}_token")
 
-    logger.info(f"Got {service} username")
-    return username
-
-
-def get_password(service: str):
-    """ """
-    if not HEADLESS:
-        try:
-            password = keyring.get_password(service, f"{service}_password")
-
-            if password is None:
-                password = getpass.getpass(
-                    prompt=f"Enter your {service} password: ", stream=None
+            if token is None:
+                logger.info(
+                    f"This is a workaround using base64 obfuscation. If it asks for input: Enter an arbitrary username and the {service} token."
                 )
-                keyring.set_password(service, f"{service}_password", password)
+                _, token = io._load_id_(service)
+            credentials.update({"token": token})
 
-        except keyring.errors.NoKeyringError:
-            logger.info(
-                f"This is a workaround using base64 obfuscation. If it asks for input: Enter an arbitrary username and the {service} password."
-            )
-            _, password = io._load_id_(service)
-
-    else:
-        logger.info(
-            f"This is a workaround using base64 obfuscation. If it asks for input: Enter an arbitrary username and the {service} password."
-        )
-        _, password = io._load_id_(service)
-
-    logger.info(f"Got {service} password")
-    return password
+    return credentials
