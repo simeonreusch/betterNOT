@@ -91,6 +91,8 @@ class Wiserep:
 
         print(headers)
         print(get_data)
+        for entry in get_data["api_key"]:
+            print(entry)
         print("-------")
 
         response = requests.post(queryurl_tns, headers=headers, data=get_data)
