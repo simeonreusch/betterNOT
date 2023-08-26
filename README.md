@@ -18,7 +18,7 @@ This will generate a standard star observability plot, create obs plots for all 
 Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today).
 
 ### Uploading spectra to WISeREP
-You will need a TNS and WISeREP bot token for this. Uploading spectra can be done as follows:
+You will need a [TNS](https://www.wis-tns.org) and [WISeREP](https://www.wiserep.org) bot token for this. Uploading spectra can be done as follows:
 ```python
 from betternot.wiserep import Wiserep
 
@@ -30,4 +30,4 @@ Wiserep(
 ```
 This will check TNS if an IAU object exists at the ZTF transient location, open the spectrum, extract the metadata, and upload the file to WISeREP as well as a report containing the extracted metadata.
 
-After checking with the (WISeREP sandbox)[https://sandbox.wiserep.org] that everythin works fine, use `sandbox=False`
+After checking with the [WISeREP sandbox](https://sandbox.wiserep.org) that everythin works fine, use `sandbox=False`
