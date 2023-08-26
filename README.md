@@ -31,6 +31,7 @@ Wiserep(
     ztf_id="ZTF23aaawbsc",
     spec_path="ZTF23aaawbsc_combined_3850.ascii",
     sandbox=True,
+    quality="high", # "low", "medium" or "high". Default: "medium"
 )
 ```
 This will check TNS if an IAU object exists at the ZTF transient location, open the spectrum, extract the metadata, and upload the file to WISeREP as well as a report containing the extracted metadata.

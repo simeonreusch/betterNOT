@@ -29,10 +29,17 @@ class Wiserep:
     Upload a spectrum to WISeREP
     """
 
-    def __init__(self, ztf_id: str, spec_path: Path | str, sandbox: bool = True):
+    def __init__(
+        self,
+        ztf_id: str,
+        spec_path: Path | str,
+        quality: str = "medium",
+        sandbox: bool = True,
+    ):
         self.logger = logging.getLogger()
         self.ztf_id = ztf_id
         self.spec_path = Path(spec_path)
+        self.quality = quality
 
         if sandbox:
             self.wiserep_endpoint = "https://sandbox.wiserep.org/api"
@@ -152,6 +159,11 @@ class Wiserep:
         report["objects"][0]["iau_name"] = tns_name
         report["objects"][0]["ra"] = self.ra
         report["objects"][0]["decl"] = self.dec
+
+        quality_levels = {"low": "1", "medium": "2", "high": "3"}
+        report["objects"][0]["spectra"]["spectra_group"][0][
+            "qualityid"
+        ] = quality_levels[self.quality]
 
         self.report = report
 
