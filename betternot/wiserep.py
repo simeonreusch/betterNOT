@@ -95,7 +95,7 @@ class Wiserep:
 
         if response.status_code != 200:
             self.logger.warn(
-                f"You got status code {response.statu_code}. Something went wrong"
+                f"You got status code {response.status_code}. Something went wrong"
             )
             tns_name = None
 
