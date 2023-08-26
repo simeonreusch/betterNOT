@@ -16,3 +16,16 @@ not ZTF23changeit ZTF23thistoo ...
 This will generate a standard star observability plot, create obs plots for all ZTF objects, download the finding charts for them from Fritz and print the coordinates as well as the last observed magnitude.
 
 Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today).
+
+### Uploading spectra to WISeREP
+You will need a TNS and WISeREP bot token for this. Uploading spectra can be done as follows:
+```python
+from betternot.wiserep import Wiserep
+
+Wiserep(
+    ztf_id="ZTF23aaawbsc",
+    spec_path="ZTF23aaawbsc_combined_3850.ascii",
+    sandbox=True,
+)
+```
+After checking with the (WISeREP sandbox)[https://sandbox.wiserep.org] that everythin works fine, use `sandbox=False`
