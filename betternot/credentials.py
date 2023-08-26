@@ -71,4 +71,8 @@ def get_credentials(service, token=False):
                 _, token = io._load_id_(service)
             credentials.update({"token": token})
 
+    print(service)
+    print(credentials)
+    print("\n\n\n")
+
     return credentials
