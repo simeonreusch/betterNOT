@@ -50,6 +50,10 @@ class Wiserep:
 
         self.tns_name = self.query_tns()
 
+        print("\n\n")
+        print(self.tns_name)
+        print("\n")
+
         if self.tns_name is not None:
             server_filename = self.upload_files([self.spec_path])[0]
             if server_filename is not None:
