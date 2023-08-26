@@ -124,7 +124,7 @@ class Wiserep:
 
         self.metadata = metadict
 
-    def generate_report(self):
+    def generate_report(self, tns_name: str|None=None):
         """
         Open and fill the template spectrum report with the metadata of the spectrum
         """
@@ -135,6 +135,10 @@ class Wiserep:
         for key, val in self.metadata.items():
             report["objects"][0]["spectra"]["spectra_group"][0][key] = val
 
+        if tns_name is None:
+            tns_name = self.tns_name
+        
+        report["objects"][0]["iau_name"] = tns_name
         report["objects"][0]["ra"] = self.ra
         report["objects"][0]["decl"] = self.dec
 
@@ -171,6 +175,7 @@ class Wiserep:
         
         if response.status_code == 200:
             server_filenames = response.json()["data"]
+            self.logger.debug(f"Received and saved as {server_filenames} on the WISeREP server")
             return server_filenames
         else:
             self.logger.warn(f"Something went wrong. Reponse code: {response.status_code}")
