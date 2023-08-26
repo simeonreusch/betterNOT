@@ -185,7 +185,7 @@ class Wiserep:
 
         if response.status_code == 200:
             server_filenames = response.json()["data"]
-            self.logger.debug(
+            self.logger.info(
                 f"Received and saved as {server_filenames} on the WISeREP server"
             )
             return server_filenames
@@ -211,6 +211,7 @@ class Wiserep:
         response = requests.post(report_url, headers=headers, data=payload)
 
         if response.status_code == 200:
+            self.logger.info("Sent metadata to WISeREP")
             return response.json()
         else:
             self.logger.warn(

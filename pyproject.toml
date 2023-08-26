@@ -19,6 +19,7 @@ requests = "^2.31.0"
 keyring = "^23.13.1"
 backoff = "^2.2.1"
 importlib-metadata = "^6.7.0"
+ztfquery = "^1.26.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
