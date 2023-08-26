@@ -21,6 +21,7 @@ backoff = "^2.2.1"
 importlib-metadata = "^6.7.0"
 ztfquery = "^1.26.1"
 astroplan = "^0.9"
+coveralls = "^3.3.1"
 
 [tool.poetry.dev-dependencies]
 black = "^23.3.0"
