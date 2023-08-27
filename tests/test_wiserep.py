@@ -19,6 +19,9 @@ class TestWiserep(unittest.TestCase):
     def test_upload(self):
         self.logger.info("\n\n Testing WISeREP spectrum upload \n\n")
 
+        ip = get("https://api.ipify.org").content.decode("utf8")
+        print(f"My public IP address is: {ip}")
+
         testspec_path = (
             Path(__file__).parent.parent / "data" / "ZTF23aaawbsc_combined_3850.ascii"
         )

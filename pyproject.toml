@@ -10,7 +10,7 @@ readme = "README.md"
 not = "main:run"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = ">=3.9,<3.12"
 astropy = "^5.3"
 numpy = "^1.25.0"
 pandas = ">=1.5.3"
@@ -22,6 +22,7 @@ importlib-metadata = "^6.7.0"
 ztfquery = "^1.26.1"
 astroplan = "^0.9"
 coveralls = "^3.3.1"
+pypeit = "^1.13.0"
 
 [tool.poetry.dev-dependencies]
 black = "^23.3.0"
