@@ -90,6 +90,7 @@ class Wiserep:
         payload = {"api_key": TNS_TOKEN, "data": json_string}
 
         print(queryurl_tns)
+        print(headers)
         print(payload)
 
         response = requests.post(queryurl_tns, headers=headers, data=payload)
