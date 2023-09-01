@@ -6,7 +6,9 @@ The observability code is largely based on the [`NOT Observing Tools`](https://g
 Note the [observation guidelines](https://notes.simeonreusch.com/s/dHt_0XzwQ#)
 
 ## Installation
-Clone the repository, `cd` into it and issue `poetry install`
+Simply run `pip install betternot`.
+
+If you want to make local changes, clone the repository, `cd` into it and issue `poetry install`.
 
 ## Usage
 ### Prepare observations
