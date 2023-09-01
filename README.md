@@ -14,9 +14,9 @@ The observation planning can be run with a command line interface. Simply issue
 ```
 not ZTF23changeit ZTF23thistoo ...
 ```
-This will generate a standard star observability plot, create obs plots for all ZTF objects, download the finding charts for them from Fritz and print the coordinates as well as the last observed magnitude.
+This will generate a standard star observability plot, create an observability plot for all ZTF objects, download the finding charts for them from Fritz and print the coordinates as well as the last observed magnitude. They will all end up in the `betternot/DATE` directory. 
 
-Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today). You can also specify a telescope site with `-site SITE` (available sites are listed [here](https://github.com/astropy/astropy-data/blob/gh-pages/coordinates/sites.json))
+Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today). You can also specify a telescope site with `-site SITE` (available sites are listed [here](https://github.com/astropy/astropy-data/blob/gh-pages/coordinates/sites.json)). Default is the NOT site (Roque de los Muchachos).
 
 ### Uploading spectra to WISeREP
 You will need a [TNS](https://www.wis-tns.org) and [WISeREP](https://www.wiserep.org) bot token for this. Uploading spectra can be done as follows:
