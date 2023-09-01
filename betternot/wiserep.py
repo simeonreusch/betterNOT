@@ -35,6 +35,7 @@ class Wiserep:
         spec_path: Path | str,
         quality: str = "medium",
         sandbox: bool = True,
+        tns_name: str | None = None,
     ):
         self.logger = logging.getLogger()
         self.ztf_id = ztf_id
@@ -48,11 +49,10 @@ class Wiserep:
 
         self.ra, self.dec = radec(self.ztf_id)
 
-        self.tns_name = self.query_tns()
-
-        print("\n\n")
-        print(self.tns_name)
-        print("\n")
+        if tns_name is None:
+            self.tns_name = self.query_tns()
+        else:
+            self.tns_name = tns_name
 
         if self.tns_name is not None:
             server_filename = self.upload_files([self.spec_path])[0]
