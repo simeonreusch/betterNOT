@@ -235,7 +235,7 @@ class Observability:
         }
 
     @staticmethod
-    def altitude_to_airmass(airmass: float):
+    def altitude_to_airmass(airmass: float | np.ndarray):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             altitude = 1.0 / np.cos(np.radians(90 - airmass))
