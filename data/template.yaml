@@ -35,7 +35,7 @@ objects:
       spectypeid: '10'
       qualityid: '2' #1: low, 3: high
       spec_proprietary_period:
-        spec_proprietary_period_value: '3'
+        spec_proprietary_period_value: '10'
         spec_proprietary_period_units: years
       spec_proprietary_period_groups:
       - '62'
