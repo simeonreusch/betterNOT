@@ -58,7 +58,7 @@ jobs:
           poetry run coverage run -m pytest -v --capture=tee-sys --ignore tests/test_wiserep.py
 
       - name: mypy
-        run: poetry run mypy planobs
+        run: poetry run mypy betternot
 
       # Push the coverage result to coveralls.io
       - name: Run Coveralls
