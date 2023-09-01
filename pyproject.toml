@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "betternot"
-version = "0.1.0"
+version = "0.1.1"
 description = "Toolset for interacting with the Nordic Optical Telescope (NOT)"
 authors = ["simeonreusch <simeon.reusch@desy.de>"]
 license = "BSD-3-Clause"
