@@ -32,6 +32,10 @@ class TestWiserep(unittest.TestCase):
         get_finding_chart(ztf_id=ztf_ids[0], date=date)
         obs.print_info()
 
+        info_expected = "-------------------------------------------\nZTF23aalftvv\nztf23aalftvv\nRA: 17:14:08.53728\nDec: +81:04:29.39952\n17.59 mag 1 days ago in the ztfr filter\n-------------------------------------------\n"
+
+        self.assertEqual(obs.info, info_expected)
+
 
 if __name__ == "__main__":
     unittest.main()

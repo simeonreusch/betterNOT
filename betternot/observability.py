@@ -62,31 +62,33 @@ class Observability:
                     )
 
     def print_info(self):
-        self.get_info()
-
+        """
+        Print the most importan information to enter when preparing an OB
+        """
         str_to_print = ""
 
-        # for ztf_id, info in self.target_dict.items():
-        #     now = Time.now().mjd
-        #     days_ago = now - info["mjd"]
-        #     coords = SkyCoord(
-        #         info["ra"],
-        #         info["dec"],
-        #         unit=(u.deg, u.deg),
-        #     )
-        #     coords_str = coords.to_string(style="hmsdms")
-        #     ra, dec = coords_str.split(" ")
-        #     ra = ra.replace("h", ":").replace("m", ":").replace("s", "")
-        #     dec = dec.replace("d", ":").replace("m", ":").replace("s", "")
-        #     str_to_print += "-------------------------------------------"
-        #     str_to_print += ztf_id
-        #     str_to_print += f"ztf{ztf_id[3:]}"
-        #     str_to_print += f"RA: {ra}"
-        #     str_to_print += f"Dec: {dec}"
-        #     str_to_print += f"{info['mag']:.2f} mag {days_ago:.0f} days ago in the {info['band']} filter"
-        #     str_to_print += "-------------------------------------------"
+        for ztf_id, info in self.target_dict.items():
+            now = Time.now().mjd
+            days_ago = now - info["mjd"]
+            coords = SkyCoord(
+                info["ra"],
+                info["dec"],
+                unit=(u.deg, u.deg),
+            )
+            coords_str = coords.to_string(style="hmsdms")
+            ra, dec = coords_str.split(" ")
+            ra = ra.replace("h", ":").replace("m", ":").replace("s", "")
+            dec = dec.replace("d", ":").replace("m", ":").replace("s", "")
+            str_to_print += "-------------------------------------------\n"
+            str_to_print += f"{ztf_id}\n"
+            str_to_print += f"ztf{ztf_id[3:]}\n"
+            str_to_print += f"RA: {ra}\n"
+            str_to_print += f"Dec: {dec}\n"
+            str_to_print += f"{info['mag']:.2f} mag {days_ago:.0f} days ago in the {info['band']} filter\n"
+            str_to_print += "-------------------------------------------\n"
 
         print(str_to_print)
+
         self.info = str_to_print
 
     def plot_standards(self):
@@ -129,15 +131,13 @@ class Observability:
                 )
 
             obj_altazs = coords.transform_to(frame_time)
-            # obj_airmass = obj_altazs.secz
 
             if plot_moon:
                 moon_info = self.check_moon(coords=coords)
                 label = f"{target} (moon dist: {moon_info['sep']:.0f}°)"
-                illumsymbol = self.get_moon_emoticon(moon_info=moon_info)
+                # illumsymbol = self.get_moon_emoticon(moon_info=moon_info)
             else:
                 label = target
-            # mask = (obj_airmass > 0) & (obj_airmass < 5)
 
             ax.plot(
                 delta_midnight,
@@ -201,7 +201,8 @@ class Observability:
         title = f"{self.date} → {(Time(self.date) + (1 * u.day)).isot.split('T')[0]}"
 
         if plot_moon:
-            title += f" {illumsymbol} ({moon_info['illum']:.0f} %)"
+            # title += f" {illumsymbol} ({moon_info['illum']:.0f} %)"
+            title += f"{moon_info['illum']:.0f} %"
 
             ax.set_title(
                 title,
