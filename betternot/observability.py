@@ -6,16 +6,16 @@ import datetime
 import logging
 import warnings
 
+import astroplan as ap  # type: ignore
 import astropy  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np
+from astroplan import moon as apmoon  # type: ignore
+from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from astropy import units as u  # type: ignore
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_body  # type: ignore
 from astropy.time import Time  # type: ignore
 
-import astroplan as ap  # type: ignore
-from astroplan import moon as apmoon  # type: ignore
-from astroplan.plots import plot_airmass, plot_altitude  # type: ignore
 from betternot.io import get_date_dir, load_config
 
 
@@ -64,27 +64,30 @@ class Observability:
     def print_info(self):
         self.get_info()
 
-        for ztf_id, info in self.target_dict.items():
-            now = Time.now().mjd
-            days_ago = now - info["mjd"]
-            coords = SkyCoord(
-                info["ra"],
-                info["dec"],
-                unit=(u.deg, u.deg),
-            )
-            coords_str = coords.to_string(style="hmsdms")
-            ra, dec = coords_str.split(" ")
-            ra = ra.replace("h", ":").replace("m", ":").replace("s", "")
-            dec = dec.replace("d", ":").replace("m", ":").replace("s", "")
-            print("-------------------------------------------")
-            print(ztf_id)
-            print(f"ztf{ztf_id[3:]}")
-            print(f"RA: {ra}")
-            print(f"Dec: {dec}")
-            print(
-                f"{info['mag']:.2f} mag {days_ago:.0f} days ago in the {info['band']} filter"
-            )
-            print("-------------------------------------------")
+        str_to_print = ""
+
+        # for ztf_id, info in self.target_dict.items():
+        #     now = Time.now().mjd
+        #     days_ago = now - info["mjd"]
+        #     coords = SkyCoord(
+        #         info["ra"],
+        #         info["dec"],
+        #         unit=(u.deg, u.deg),
+        #     )
+        #     coords_str = coords.to_string(style="hmsdms")
+        #     ra, dec = coords_str.split(" ")
+        #     ra = ra.replace("h", ":").replace("m", ":").replace("s", "")
+        #     dec = dec.replace("d", ":").replace("m", ":").replace("s", "")
+        #     str_to_print += "-------------------------------------------"
+        #     str_to_print += ztf_id
+        #     str_to_print += f"ztf{ztf_id[3:]}"
+        #     str_to_print += f"RA: {ra}"
+        #     str_to_print += f"Dec: {dec}"
+        #     str_to_print += f"{info['mag']:.2f} mag {days_ago:.0f} days ago in the {info['band']} filter"
+        #     str_to_print += "-------------------------------------------"
+
+        print(str_to_print)
+        self.info = str_to_print
 
     def plot_standards(self):
         std_dict = self.config["standards"]
