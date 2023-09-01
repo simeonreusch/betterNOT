@@ -54,6 +54,7 @@ jobs:
           FRITZ_token: ${{ secrets.fritz }}
           TNS_token: ${{ secrets.tns }}
           WISEREP_token: ${{ secrets.wiserep }}
+          PYPI_API_TOKEN: ${{ secrets.pypi_api_token }}
         run: |
           poetry run coverage run -m pytest -v --capture=tee-sys --ignore tests/test_wiserep.py
 
