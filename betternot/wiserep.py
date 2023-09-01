@@ -210,8 +210,6 @@ class Wiserep:
 
         response = requests.post(url, headers=headers, data=api_data, files=files_data)
 
-        print(response)
-
         if response.status_code == 200:
             server_filenames = response.json()["data"]
             self.logger.info(
