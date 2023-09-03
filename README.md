@@ -3,6 +3,9 @@ Toolset for preparing observations with the Nordic Optical Telescope (NOT). Curr
 
 The observability code is largely based on the [`NOT Observing Tools`](https://github.com/steveschulze/NOT_Observing_Tools) by Steve Schulze.
 
+[![CI](https://github.com/simeonreusch/betternot/actions/workflows/continous_integration.yml/badge.svg)](https://github.com/simeonreusch/betternot/actions/workflows/continous_integration.yml)
+[![PyPI version](https://badge.fury.io/py/betternot.svg)](https://badge.fury.io/py/betternot)
+
 Note the [observation guidelines](https://notes.simeonreusch.com/s/dHt_0XzwQ#)
 
 ## Installation
