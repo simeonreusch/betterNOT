@@ -6,7 +6,7 @@ The observability code is largely based on the [`NOT Observing Tools`](https://g
 [![CI](https://github.com/simeonreusch/betternot/actions/workflows/continous_integration.yml/badge.svg)](https://github.com/simeonreusch/betternot/actions/workflows/continous_integration.yml)
 [![PyPI version](https://badge.fury.io/py/betternot.svg)](https://badge.fury.io/py/betternot)
 
-Note the [observation guidelines](https://notes.simeonreusch.com/s/dHt_0XzwQ#)
+Note the [observation guidelines](https://notes.simeonreusch.com/s/dHt_0XzwQ#).
 
 ## Installation
 Simply run `pip install betternot`.
@@ -23,8 +23,8 @@ This will generate a standard star observability plot, create an observability p
 
 Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today). You can also specify a telescope site with `-site SITE` (available sites are listed [here](https://github.com/astropy/astropy-data/blob/gh-pages/coordinates/sites.json)). Default is the NOT site (Roque de los Muchachos).
 
-### Uploading spectra to WISeREP
-You will need a [TNS](https://www.wis-tns.org) and [WISeREP](https://www.wiserep.org) bot token for this. Uploading spectra can be done as follows:
+### Uploading a spectrum to WISeREP
+You will need a [TNS](https://www.wis-tns.org) and [WISeREP](https://www.wiserep.org) bot token for this. Uploading a spectrum can be done as follows:
 
 ```python
 import logging
