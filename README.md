@@ -19,9 +19,9 @@ The observation planning can be run with a command line interface. Simply issue
 ```
 not ZTF23changeit ZTF23thistoo ...
 ```
-This will generate a standard star observability plot, create an observability plot for all ZTF objects, download the finding charts for them from Fritz and print the coordinates as well as the last observed magnitude. They will all end up in the `betternot/DATE` directory. 
+This will generate a standard star observability plot, create an observability plot for all ZTF objects, download the finding charts for them from Fritz and print the coordinates as well as the last observed magnitude for easy transfer to the triggering page. All plots are stored in a `betternot/DATE` directory. 
 
-Optionally, you can specify a desired date with `-date YYYY-MM-DD` (the default is today). You can also specify a telescope site with `-site SITE` (available sites are listed [here](https://github.com/astropy/astropy-data/blob/gh-pages/coordinates/sites.json)). Default is the NOT site (Roque de los Muchachos).
+Optionally, you can specify a desired observing date with `-date YYYY-MM-DD` (the default is today). You can also specify a telescope site with `-site SITE` (available sites are listed [here](https://github.com/astropy/astropy-data/blob/gh-pages/coordinates/sites.json)). Default is the NOT site (Roque de los Muchachos).
 
 ### Uploading a spectrum to WISeREP
 You will need a [TNS](https://www.wis-tns.org) and [WISeREP](https://www.wiserep.org) bot token for this. Uploading a spectrum can be done as follows:
@@ -37,10 +37,10 @@ logger.setLevel(logging.DEBUG)
 Wiserep(
     ztf_id="ZTF23aaawbsc",
     spec_path="ZTF23aaawbsc_combined_3850.ascii",
-    sandbox=True,
+    sandbox=True, # set False for actual upload
     quality="high", # "low", "medium" or "high". Default: "medium"
 )
 ```
 This will check TNS if an IAU object exists at the ZTF transient location, open the spectrum, extract the metadata, and upload the file to WISeREP as well as a report containing the extracted metadata.
 
-After checking with the [WISeREP sandbox](https://sandbox.wiserep.org) that everything works fine, use `sandbox=False`
+After checking with the [WISeREP sandbox](https://sandbox.wiserep.org) that everything worked fine, set `sandbox=False` to upload for good.
