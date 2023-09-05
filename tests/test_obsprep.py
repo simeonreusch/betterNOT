@@ -6,6 +6,7 @@ import os
 import unittest
 from pathlib import Path
 
+from astropy.time import Time  # type: ignore
 from betternot import fritz
 from betternot.findingchart import get_finding_chart
 from betternot.observability import Observability
@@ -32,7 +33,14 @@ class TestWiserep(unittest.TestCase):
         get_finding_chart(ztf_id=ztf_ids[0], date=date)
         obs.print_info()
 
-        info_expected = "-------------------------------------------\nZTF23aalftvv\nztf23aalftvv\nRA: 17:14:08.53728\nDec: +81:04:29.39952\n17.59 mag 1 days ago in the ztfr filter\n-------------------------------------------\n"
+        obs_dict = obs.target_dict[ztf_ids[0]]
+        obs_mjd = obs_dict["mjd"]
+        now = Time.now().mjd
+        days_ago = now - obs_mjd
+        mag = obs_dict["mag"]
+        band = obs_dict["band"]
+
+        info_expected = f"-------------------------------------------\nZTF23aalftvv\nztf23aalftvv\nRA: 17:14:08.53728\nDec: +81:04:29.39952\n{mag:.2f} mag {days_ago:.0f} days ago in the {band} filter\n-------------------------------------------\n"
 
         self.assertEqual(obs.info, info_expected)
 
