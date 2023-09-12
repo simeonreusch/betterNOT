@@ -1,7 +1,7 @@
 #!/bin/bash
 DATE=$(date -v -1d +%Y-%m-%d)
 STANDARD="SP2209+178"
-declare -a OBJECTS=("ZTF23aajucmw")
+declare -a OBJECTS=("ZTF23aaawbsc" "ZTF23aakmewi")
 # DATE="2023-08-28"
 
 DL_DIR="/Users/simeon/Downloads"
