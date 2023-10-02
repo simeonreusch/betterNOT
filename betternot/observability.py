@@ -243,7 +243,7 @@ class Observability:
         return altitude
 
     @staticmethod
-    def airmass_to_altitude(altitude: float):
+    def airmass_to_altitude(altitude: float | np.ndarray):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             airmass = 90 - np.degrees(np.arccos(1 / altitude))
